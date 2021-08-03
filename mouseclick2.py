@@ -3,16 +3,38 @@ from time import sleep
 import pyautogui
 import os
 
+import win32gui
+import win32con
+import win32clipboard as w
+import time
+import datetime
+import os
+
+class sendMsg():
+    def __init__(self,receiver,msg):
+        self.receiver=receiver
+        self.msg=msg
+        self.setText()
+    #设置剪贴版内容
+    def setText(self):
+        w.OpenClipboard()
+        w.EmptyClipboard()
+        w.SetClipboardData(win32con.CF_UNICODETEXT, self.msg)
+        w.CloseClipboard()
+    #发送消息
+    def sendmsg(self):
+        qq=win32gui.FindWindow(None,self.receiver)
+        time.sleep(0.01)
+        win32gui.SendMessage(qq,win32con.WM_PASTE , 0, 0) #win32on 见site-packages\win32\lib\win32con.py,有的博文里出现的770对用的就是win32con.WM_PASTE
+        win32gui.SendMessage(qq, win32con.WM_KEYDOWN, win32con.VK_RETURN, 0)
 
 def open_app(app_dir):
     os.startfile(app_dir) # os.startfile（）打开外部应该程序，与windows双击相同
 
-
-if __name__ == "__main__":
+def tell_njust_imhealthy():
     app_dir = r'C:\Program Files (x86)\Tencent\WeChat\WeChat.exe'  # 指定应用程序目录
     open_app(app_dir)
     sleep(1)
-
     # 超级菜鸡的自动填报程序
     m = PyMouse()
     # 参考：https://www.cnblogs.com/gexbooks/p/10790063.html
@@ -59,26 +81,26 @@ if __name__ == "__main__":
     m.click(int(weixin_window_close_x),
             int(weixin_window_close_y))  # 关闭微信窗口
     sleep(1)
+    
 
-# m = PyMouse()
-    # m.click(470, 1060) # 从下面的任务栏点微信
-    # sleep(1)
-    # m.click(170, 90)  # 点企业号
-    # sleep(1)
-    # m.click(1160, 110)  # 点企业号应用
-    # sleep(0.5)
-    # m.click(620, 200)  # 点校园助手
-    # sleep(1)
-    #
-    # m.click(1500, 960)  # 点链接
-    # sleep(2)            # 点完链接多等会
-    # m.click(950, 660)   # 点填报
-    # sleep(1)
-    # m.click(1150, 740)   # 点体温
-    # sleep(0.5)
-    # m.click(1150, 830)   # 点咳嗽
-    # sleep(0.5)
-    # m.click(1150, 893)   # 点上报
-    # sleep(0.5)
+if __name__ == "__main__":
+    # 获取时间
+    curr_time = datetime.datetime.now()
+    time_str = datetime.datetime.strftime(curr_time, '%Y-%m-%d %H:%M:%S')
+    receiver = '自动化 19 杨城彰 '
+    start_str = time_str+" python:开始健康上报"
+    # 发送QQ消息，告知开始报平安
+    qq = sendMsg(receiver, start_str)
+    qq.sendmsg()
+    # 执行健康上报流程
+    tell_njust_imhealthy()
+    # 重新获取时间，发送QQ消息，告知报平安完成
+    curr_time = datetime.datetime.now()
+    time_str = datetime.datetime.strftime(curr_time, '%Y-%m-%d %H:%M:%S')
+    end_str = time_str + " python:已成功填报"
+    qq = sendMsg(receiver, end_str)
+    qq.sendmsg()
+    
+
 
 
