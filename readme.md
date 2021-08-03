@@ -1,8 +1,8 @@
-# 自动向理报平安
+# 自动健康上报
 
 - 依赖环境：pywin32、python-opencv、pyhook、pyautogui、pyuserinput
 
-- 仓库地址：[mxyxbb/python-autoPostHealth: 自动向理报平安 (github.com)](https://github.com/mxyxbb/python-autoPostHealth)
+- 仓库地址：[mxyxbb/python-autoPostHealth: 自动健康上报 (github.com)](https://github.com/mxyxbb/python-autoPostHealth)
 
 - 主要方法：
 
