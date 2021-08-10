@@ -48,7 +48,9 @@ def tell_njust_imhealthy():
     weixin_njust_app_x,weixin_njust_app_y = pyautogui.center(weixin_njust_app_location)
     m.click(int(weixin_njust_app_x), int(weixin_njust_app_y))  # 点企业号应用
     sleep(2)
-    m.click(int(weixin_njust_app_x), int(weixin_njust_app_y+100))  # 点校园助手
+    weixin_njust_assistant_location = pyautogui.locateOnScreen('campus_assistant.png', confidence=0.9)  # 匹配校园助手坐标
+    weixin_njust_assistant_location_x,weixin_njust_assistant_location_y = pyautogui.center(weixin_njust_assistant_location)
+    m.click(int(weixin_njust_assistant_location_x), int(weixin_njust_assistant_location_y))  # 点校园助手
     sleep(2)
     weixin_window_max_location = pyautogui.locateOnScreen('weixin_windowmax.png', confidence=0.9)  # 匹配微信窗口最大化坐标
     weixin_window_max_x,weixin_window_max_y = pyautogui.center(weixin_window_max_location)
