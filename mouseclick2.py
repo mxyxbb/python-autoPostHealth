@@ -64,7 +64,7 @@ def tell_njust_imhealthy():
     weixin_window_max_x,weixin_window_max_y = pyautogui.center(weixin_window_max_location)
     m.click(int(weixin_window_max_x), int(weixin_window_max_y))  # 点健康上报窗口最大化
     sleep(2)
-    tianxie_location = pyautogui.locateOnScreen('kaishitianxie.png', confidence=0.9)  # 匹配开始填写坐标
+    tianxie_location = pyautogui.locateOnScreen('kaishitianxie.png', confidence=0.8, region=(100,850, 1800, 200))  # 匹配开始填写坐标
     tianxie_x,tianxie_y = pyautogui.center(tianxie_location)
     m.click(int(tianxie_x), int(tianxie_y))  # 点填报
     sleep(3.5)
