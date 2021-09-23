@@ -9,7 +9,29 @@ import win32clipboard as w
 import time
 import datetime
 import os
+import requests
+from bs4 import BeautifulSoup
 
+def oneday():
+    url='http://wufazhuce.com/one/'#每一期的链接共同的部分
+    # ran=(datetime.today()-datetime.date()).days+2376
+    ran=(datetime.date.today()-datetime.date(2019,3,11)).days+2376
+    currenturl=url+str(ran)#当前期的链接
+    try:
+        res=requests.get(currenturl)
+        res.raise_for_status()
+    except requests.RequestException as e:#处理异常
+        print(e)
+    else:
+        html=res.text#页面内容
+        soup = BeautifulSoup(html,'html.parser')
+        b=soup.select('.one-cita')#查找“每日一句”所在的标签
+        print(b[0].string.split())
+        words=str(b[0].string.split())
+        words = words.replace("['", "[").replace("']", "]")
+        print(words)
+        return words
+        
 class sendMsg():
     def __init__(self,receiver,msg):
         self.receiver=receiver
@@ -114,8 +136,15 @@ if __name__ == "__main__":
     # 发送QQ消息，告知开始报平安
     qq = sendMsg(receiver, start_str)
     qq.sendmsg()
+    
+    if(curr_time.hour > 15):
+        curr_word = oneday()
+        qq = sendMsg(receiver, curr_word)
+        qq.sendmsg()
+    
     # 执行健康上报流程
     tell_njust_imhealthy()
+    
     # 重新获取时间，发送QQ消息，告知报平安完成
     curr_time = datetime.datetime.now()
     time_str = datetime.datetime.strftime(curr_time, '%Y-%m-%d %H:%M:%S')
